@@ -2,7 +2,7 @@
 
 A zero-backend, client-side web utility for standardizing mixed-size documents, irregular scans, and Letter-formatted PDFs into uniform A4 sheets or unified page widths. 
 
-Runs 100% inside your browser using WebAssembly and JavaScript—no files are ever uploaded to a remote server.
+Runs 100% inside your browser using WebAssembly and JavaScript - no files are ever uploaded to a remote server.
 
 Live Demo: [nekonyan.fun/PDF-Resizer](https://nekonyan.fun/PDF-Resizer)
 
@@ -20,8 +20,8 @@ This tool embeds original pages as immutable vector objects (`/XObject`) and app
 
 ## Key Features
 
-- **Mode 1 — Fit to A4 Canvas:** Centers each page inside a standard A4 canvas (210 × 297 mm) with user-defined margins and automatic portrait/landscape orientation matching.
-- **Mode 2 — Unify Width to A4:** Locks the width of all pages to 210 mm while calculating page heights proportionally to match each original page's aspect ratio.
+- **Mode 1  -  Fit to A4 Canvas:** Centers each page inside a standard A4 canvas (210 × 297 mm) with user-defined margins and automatic portrait/landscape orientation matching.
+- **Mode 2  -  Unify Width to A4:** Locks the width of all pages to 210 mm while calculating page heights proportionally to match each original page's aspect ratio.
 - **Reorderable Queue:** Drag-and-drop handles (`☰`) to rearrange document sequence before merging or exporting.
 - **Batch Export Options:**
   - **View in New Tab (`👁️`):** Instant in-memory blob preview in browser reader.
