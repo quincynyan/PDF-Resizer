@@ -92,5 +92,5 @@ Open your browser to `http://localhost:8000`.
 
 ## Related Tools
 
-* **[Anything to PDF](https://www.google.com/url?sa=E&source=gmail&q=https://nekonyan.fun/anything-to-pdf):** Convert Word DOCX, spreadsheets, presentation slides, multi-page TIFFs, video storyboards, and iOS photos into PDF with 1:1 original dimensions preserved.
+* **[Anything to PDF](https://nekonyan.fun/anything-to-pdf):** Convert Word DOCX, spreadsheets, presentation slides, multi-page TIFFs, video storyboards, and iOS photos into PDF with 1:1 original dimensions preserved.
 
