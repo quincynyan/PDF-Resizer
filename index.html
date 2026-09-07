@@ -30,12 +30,18 @@
 
   <style>
     :root {
+      /* Light Mode (Kawaii Pastel Strawberry) */
       --bg: #fff3f7;
+      --radial-1: rgba(255, 182, 217, 0.35);
+      --radial-2: rgba(179, 136, 235, 0.3);
+      --radial-3: rgba(255, 209, 220, 0.4);
       --card-bg: rgba(255, 255, 255, 0.94);
       --card-border: #ffd4e5;
       --border: #f8c1d9;
+      --dashed-border: #ff9ebb;
       --text: #492a3e;
       --text-muted: #956983;
+      --header-title: #d63384;
       --primary: #ff70a6;
       --primary-hover: #ff4785;
       --primary-shadow: rgba(255, 112, 166, 0.35);
@@ -45,9 +51,67 @@
       --success: #06d6a0;
       --success-hover: #05b88a;
       --danger: #ff5c77;
+      --nav-link-bg: #fbf5ff;
+      --nav-link-border: #ebd9fc;
+      --table-row-hover: #fffafc;
+      --dropzone-bg-top: rgba(255, 255, 255, 0.85);
+      --dropzone-bg-bottom: rgba(255, 240, 246, 0.95);
+      --dropzone-dragover-bg: #fff0f7;
+      --pill-bg: #ffffff;
+      --pill-text: #7b4c6b;
+      --secondary-btn-bg: #ffffff;
+      --mode-option-bg: #ffffff;
       --radius-lg: 24px;
       --radius-md: 16px;
       --radius-pill: 999px;
+
+      /* Switch Specific Light Tokens */
+      --switch-track: linear-gradient(135deg, #ffd1e4, #ffb3d1);
+      --switch-track-border: #ff9ebb;
+      --switch-thumb-bg: #ffffff;
+      --switch-thumb-shadow: 0 4px 12px rgba(255, 112, 166, 0.4);
+      --switch-label-color: #6d2f53;
+    }
+
+    [data-theme="dark"] {
+      /* Dark Mode (Midnight Cyber Sakura) */
+      --bg: #150d1a;
+      --radial-1: rgba(255, 112, 166, 0.18);
+      --radial-2: rgba(157, 78, 221, 0.22);
+      --radial-3: rgba(25, 14, 33, 0.5);
+      --card-bg: rgba(33, 20, 42, 0.88);
+      --card-border: #4d2448;
+      --border: #5a2c53;
+      --dashed-border: #ff70a6;
+      --text: #fbeaf4;
+      --text-muted: #c49bb8;
+      --header-title: #ff85b8;
+      --primary: #ff5c99;
+      --primary-hover: #ff3380;
+      --primary-shadow: rgba(255, 92, 153, 0.4);
+      --secondary-pink: #341a36;
+      --accent: #c792ea;
+      --accent-hover: #b072e6;
+      --success: #10b981;
+      --success-hover: #059669;
+      --danger: #f87171;
+      --nav-link-bg: #281734;
+      --nav-link-border: #522765;
+      --table-row-hover: #2b1736;
+      --dropzone-bg-top: rgba(36, 21, 46, 0.85);
+      --dropzone-bg-bottom: rgba(27, 15, 35, 0.95);
+      --dropzone-dragover-bg: #3a1c47;
+      --pill-bg: #2b1735;
+      --pill-text: #ffd3ea;
+      --secondary-btn-bg: #281634;
+      --mode-option-bg: #281734;
+
+      /* Switch Specific Dark Tokens */
+      --switch-track: linear-gradient(135deg, #371842, #5a2569);
+      --switch-track-border: #79348c;
+      --switch-thumb-bg: #1e0f26;
+      --switch-thumb-shadow: 0 4px 14px rgba(0, 0, 0, 0.65);
+      --switch-label-color: #f7d6f0;
     }
 
     * {
@@ -55,21 +119,146 @@
       margin: 0;
       padding: 0;
       font-family: 'Quicksand', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      transition: background-color 0.4s ease, border-color 0.4s ease, color 0.4s ease;
     }
 
     body {
       background-color: var(--bg);
       background-image: 
-        radial-gradient(circle at 12% 15%, rgba(255, 182, 217, 0.35) 0%, transparent 22%),
-        radial-gradient(circle at 88% 25%, rgba(179, 136, 235, 0.3) 0%, transparent 28%),
-        radial-gradient(circle at 50% 85%, rgba(255, 209, 220, 0.4) 0%, transparent 35%);
+        radial-gradient(circle at 12% 15%, var(--radial-1) 0%, transparent 26%),
+        radial-gradient(circle at 88% 25%, var(--radial-2) 0%, transparent 30%),
+        radial-gradient(circle at 50% 85%, var(--radial-3) 0%, transparent 35%);
       color: var(--text);
       padding: 2.5rem 1rem;
       line-height: 1.6;
       min-height: 100vh;
       display: flex;
       flex-direction: column;
+      position: relative;
     }
+
+    /* ===================================================
+       KAWAII IPHONE-STYLE PILL LIGHT SWITCH WITH MORPH
+       =================================================== */
+    .theme-switch-container {
+      position: fixed;
+      top: 1.25rem;
+      right: 1.5rem;
+      z-index: 1000;
+      user-select: none;
+    }
+
+    .theme-switch {
+      position: relative;
+      width: 132px;
+      height: 44px;
+      border-radius: var(--radius-pill);
+      background: var(--switch-track);
+      border: 2px solid var(--switch-track-border);
+      box-shadow: 0 4px 18px rgba(0, 0, 0, 0.12), inset 0 2px 4px rgba(255, 255, 255, 0.35);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      padding: 3px;
+      overflow: hidden;
+      transition: background 0.45s ease, border-color 0.45s ease, transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
+    }
+    .theme-switch:hover {
+      transform: translateY(-2px) scale(1.03);
+      box-shadow: 0 8px 25px var(--primary-shadow);
+    }
+    .theme-switch:active .theme-switch-thumb {
+      width: 44px;
+    }
+
+    .theme-switch-thumb {
+      position: absolute;
+      left: 3px;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--switch-thumb-bg);
+      box-shadow: var(--switch-thumb-shadow);
+      border: 1px solid var(--switch-track-border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 2;
+      transition: transform 0.48s cubic-bezier(0.34, 1.56, 0.64, 1),
+                  width 0.25s ease,
+                  background 0.4s ease,
+                  border-color 0.4s ease;
+    }
+
+    .thumb-icon {
+      position: absolute;
+      font-size: 1.2rem;
+      line-height: 1;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: opacity 0.38s ease, transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .icon-sun {
+      opacity: 1;
+      transform: scale(1) rotate(0deg);
+    }
+    .icon-moon {
+      opacity: 0;
+      transform: scale(0.3) rotate(-90deg);
+    }
+
+    .theme-switch-labels {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      display: flex;
+      align-items: center;
+      pointer-events: none;
+      font-family: 'Comfortaa', cursive, sans-serif;
+      font-size: 0.76rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+    }
+    .switch-text {
+      position: absolute;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.2rem;
+      color: var(--switch-label-color);
+      transition: opacity 0.38s ease, transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .text-day {
+      right: 12px;
+      opacity: 1;
+      transform: translateX(0);
+    }
+    .text-night {
+      left: 12px;
+      opacity: 0;
+      transform: translateX(-12px);
+    }
+
+    [data-theme="dark"] .theme-switch-thumb {
+      transform: translateX(88px);
+    }
+    [data-theme="dark"] .icon-sun {
+      opacity: 0;
+      transform: scale(0.3) rotate(90deg);
+    }
+    [data-theme="dark"] .icon-moon {
+      opacity: 1;
+      transform: scale(1) rotate(0deg);
+    }
+    [data-theme="dark"] .text-day {
+      opacity: 0;
+      transform: translateX(12px);
+    }
+    [data-theme="dark"] .text-night {
+      opacity: 1;
+      transform: translateX(0);
+    }
+    /* =================================================== */
 
     .container {
       max-width: 980px;
@@ -83,15 +272,16 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      background: #ffffff;
+      background: var(--card-bg);
       border: 2px dashed var(--card-border);
       border-radius: var(--radius-md);
       padding: 0.8rem 1.4rem;
       margin-bottom: 1.8rem;
       font-size: 0.9rem;
-      box-shadow: 0 4px 18px rgba(255, 143, 178, 0.12);
+      box-shadow: 0 4px 18px rgba(0, 0, 0, 0.06);
       flex-wrap: wrap;
       gap: 0.75rem;
+      backdrop-filter: blur(8px);
     }
     .app-nav strong { color: var(--primary); font-weight: 700; }
     .app-nav a {
@@ -102,9 +292,9 @@
       gap: 0.4rem;
       font-weight: 700;
       padding: 0.3rem 0.8rem;
-      background: #fbf5ff;
+      background: var(--nav-link-bg);
       border-radius: var(--radius-pill);
-      border: 1px solid #ebd9fc;
+      border: 1px solid var(--nav-link-border);
       transition: all 0.25s ease;
     }
     .app-nav a:hover {
@@ -122,14 +312,14 @@
       font-family: 'Comfortaa', cursive, sans-serif;
       font-size: 2.1rem;
       font-weight: 700;
-      color: #d63384;
+      color: var(--header-title);
       margin-bottom: 0.4rem;
       display: inline-flex;
       align-items: center;
       justify-content: center;
       gap: 0.6rem;
       letter-spacing: -0.5px;
-      text-shadow: 0 2px 8px rgba(255, 112, 166, 0.2);
+      text-shadow: 0 2px 10px var(--primary-shadow);
     }
     p.subtitle {
       color: var(--text-muted);
@@ -145,7 +335,7 @@
       border-radius: var(--radius-lg);
       padding: 1.8rem;
       margin-bottom: 1.8rem;
-      box-shadow: 0 10px 30px rgba(255, 143, 178, 0.12);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
       backdrop-filter: blur(10px);
     }
 
@@ -163,19 +353,19 @@
       border-radius: var(--radius-md);
       padding: 1.2rem;
       cursor: pointer;
-      background: #ffffff;
+      background: var(--mode-option-bg);
       transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
       position: relative;
     }
     .mode-option:hover {
       border-color: var(--primary);
       transform: translateY(-2px);
-      box-shadow: 0 6px 18px rgba(255, 112, 166, 0.15);
+      box-shadow: 0 6px 18px var(--primary-shadow);
     }
     .mode-option.active {
       border-color: var(--primary);
-      background: #fff5f9;
-      box-shadow: 0 6px 20px rgba(255, 112, 166, 0.22);
+      background: var(--secondary-pink);
+      box-shadow: 0 6px 20px var(--primary-shadow);
     }
     .mode-option input {
       accent-color: var(--primary);
@@ -188,7 +378,7 @@
       font-weight: 700;
       margin-bottom: 0.35rem;
       display: inline-block;
-      color: #633350;
+      color: var(--text);
     }
     .mode-option p {
       font-size: 0.88rem;
@@ -204,10 +394,10 @@
       align-items: center;
       margin-top: 1rem;
       padding-top: 1.1rem;
-      border-top: 2px dashed #fce4ee;
+      border-top: 2px dashed var(--border);
       font-size: 0.92rem;
       font-weight: 600;
-      color: #633350;
+      color: var(--text);
       flex-wrap: wrap;
     }
     .settings-subrow label {
@@ -222,7 +412,7 @@
       height: 17px;
     }
     input[type="number"] {
-      background: #ffffff;
+      background: var(--card-bg);
       border: 2px solid var(--card-border);
       color: var(--text);
       padding: 0.4rem 0.65rem;
@@ -235,22 +425,22 @@
     }
     input[type="number"]:focus {
       border-color: var(--primary);
-      box-shadow: 0 0 0 3px rgba(255, 112, 166, 0.2);
+      box-shadow: 0 0 0 3px var(--primary-shadow);
     }
 
     /* Kawaii Drop Zone */
     .dropzone {
-      border: 3px dashed #ff9ebb;
+      border: 3px dashed var(--dashed-border);
       border-radius: var(--radius-lg);
       padding: 3rem 1.8rem;
       text-align: center;
       cursor: default;
-      background: linear-gradient(180deg, rgba(255, 255, 255, 0.8), rgba(255, 240, 246, 0.95));
+      background: linear-gradient(180deg, var(--dropzone-bg-top), var(--dropzone-bg-bottom));
       transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
     .dropzone.dragover {
       border-color: var(--primary);
-      background: #fff0f7;
+      background: var(--dropzone-dragover-bg);
       transform: scale(1.02);
       box-shadow: 0 12px 35px var(--primary-shadow);
       cursor: copy;
@@ -273,7 +463,7 @@
       font-family: 'Comfortaa', cursive, sans-serif;
       font-size: 1.15rem;
       font-weight: 700;
-      color: #633350;
+      color: var(--text);
       margin-bottom: 1.1rem;
     }
 
@@ -304,17 +494,17 @@
     button:hover, .btn:hover {
       background: var(--primary-hover);
       transform: translateY(-2.5px) scale(1.03);
-      box-shadow: 0 7px 20px rgba(255, 71, 133, 0.45);
+      box-shadow: 0 7px 20px var(--primary-shadow);
     }
     button:active, .btn:active {
       transform: translateY(1px) scale(0.98);
     }
 
     button.secondary {
-      background: #ffffff;
+      background: var(--secondary-btn-bg);
       border: 2px solid var(--border);
       color: var(--text);
-      box-shadow: 0 3px 10px rgba(0,0,0,0.04);
+      box-shadow: 0 3px 10px rgba(0,0,0,0.06);
     }
     button.secondary:hover {
       background: var(--secondary-pink);
@@ -357,6 +547,10 @@
     .status-ready { background: #d1fae5; color: #047857; border: 1.5px solid #a7f3d0; }
     .status-error { background: #ffe4e6; color: #e11d48; border: 1.5px solid #fecdd3; }
 
+    [data-theme="dark"] .status-loading { background: #132f4c; color: #38bdf8; border-color: #0369a1; }
+    [data-theme="dark"] .status-ready { background: #133829; color: #34d399; border-color: #047857; }
+    [data-theme="dark"] .status-error { background: #401822; color: #fb7185; border-color: #be123c; }
+
     /* Progress & Batch Bar */
     .batch-bar {
       display: flex;
@@ -365,22 +559,22 @@
       flex-wrap: wrap;
       gap: 1.2rem;
       margin-bottom: 1.2rem;
-      background: #ffffff;
+      background: var(--card-bg);
       padding: 1.1rem 1.5rem;
       border-radius: var(--radius-md);
       border: 2px solid var(--card-border);
-      box-shadow: 0 6px 18px rgba(255, 143, 178, 0.08);
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
     }
     #queue-stat { font-weight: 700; color: var(--text); font-size: 0.95rem; }
     .progress-track {
       width: 100%;
       min-width: 170px;
       height: 10px;
-      background: #ffe4ef;
+      background: var(--secondary-pink);
       border-radius: var(--radius-pill);
       overflow: hidden;
       margin-top: 0.5rem;
-      border: 1px solid #ffd1e4;
+      border: 1px solid var(--border);
     }
     .progress-fill {
       width: 0%;
@@ -404,12 +598,12 @@
     }
     .file-table td {
       padding: 1rem 1.1rem;
-      border-bottom: 1px dashed #fce4ee;
-      background: #ffffff;
+      border-bottom: 1px dashed var(--border);
+      background: var(--card-bg);
       color: var(--text);
     }
     .file-table tr:last-child td { border-bottom: none; }
-    .file-table tr:hover td { background: #fffafc; }
+    .file-table tr:hover td { background: var(--table-row-hover); }
 
     .drag-handle {
       cursor: grab;
@@ -423,7 +617,7 @@
     .drag-handle:hover { color: var(--primary); transform: scale(1.2); }
     .drag-handle:active { cursor: grabbing; }
 
-    tr.row-dragging td { opacity: 0.35; background: #fff0f6 !important; }
+    tr.row-dragging td { opacity: 0.35; background: var(--secondary-pink) !important; }
     tr.drag-over-top td { border-top: 3px solid var(--primary) !important; }
     tr.drag-over-bottom td { border-bottom: 3px solid var(--primary) !important; }
 
@@ -440,6 +634,12 @@
     .badge-busy { background: #e0f2fe; color: #0284c7; border: 1px solid #bae6fd; animation: pulseBadge 1.2s infinite ease-in-out; }
     .badge-done { background: #dcfce7; color: #15803d; border: 1px solid #bbf7d0; }
     .badge-error { background: #ffe4e6; color: #be123c; border: 1px solid #fecdd3; }
+
+    [data-theme="dark"] .badge-wait { background: #2f2135; color: #bca4c3; border-color: #4a3652; }
+    [data-theme="dark"] .badge-busy { background: #132f4c; color: #7dd3fc; border-color: #0284c7; }
+    [data-theme="dark"] .badge-done { background: #133b2a; color: #86efac; border-color: #16a34a; }
+    [data-theme="dark"] .badge-error { background: #401822; color: #fda4af; border-color: #e11d48; }
+
     @keyframes pulseBadge { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
 
     .truncate { max-width: 240px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: block; font-weight: 600; }
@@ -448,12 +648,12 @@
     .workflow-hub {
       display: none;
       position: relative;
-      background: linear-gradient(135deg, #ffffff 0%, #fff2f8 100%);
-      border: 2.5px solid #ffb8d4;
+      background: linear-gradient(135deg, var(--card-bg) 0%, var(--secondary-pink) 100%);
+      border: 2.5px solid var(--card-border);
       border-radius: var(--radius-lg);
       padding: 1.8rem;
       margin-top: 1.8rem;
-      box-shadow: 0 14px 35px rgba(255, 143, 178, 0.22);
+      box-shadow: 0 14px 35px rgba(0, 0, 0, 0.15);
       animation: slideUp 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
     @keyframes slideUp {
@@ -477,8 +677,8 @@
       text-transform: uppercase;
       letter-spacing: 0.06em;
       color: var(--accent);
-      background: #f4ecff;
-      border: 1.5px solid #ebd9fc;
+      background: var(--nav-link-bg);
+      border: 1.5px solid var(--nav-link-border);
       padding: 0.3rem 0.85rem;
       border-radius: var(--radius-pill);
     }
@@ -497,7 +697,7 @@
     }
 
     .dismiss-btn {
-      background: #fff0f6;
+      background: var(--nav-link-bg);
       border: 1px solid var(--card-border);
       color: var(--text-muted);
       cursor: pointer;
@@ -506,7 +706,7 @@
       border-radius: var(--radius-pill);
       box-shadow: none;
     }
-    .dismiss-btn:hover { color: var(--primary); background: #ffe4ef; transform: none; }
+    .dismiss-btn:hover { color: var(--primary); background: var(--secondary-pink); transform: none; }
 
     .workflow-body {
       display: flex;
@@ -521,7 +721,7 @@
       font-size: 1.25rem;
       font-weight: 700;
       margin-bottom: 0.4rem;
-      color: #492a3e;
+      color: var(--text);
     }
 
     .workflow-desc p {
@@ -535,13 +735,13 @@
     .workflow-chips { display: flex; flex-wrap: wrap; gap: 0.55rem; }
     .workflow-chip {
       font-size: 0.78rem;
-      background: #ffffff;
-      border: 1.5px solid #f9cadf;
-      color: #6d435e;
+      background: var(--card-bg);
+      border: 1.5px solid var(--border);
+      color: var(--text);
       padding: 0.3rem 0.75rem;
       border-radius: var(--radius-pill);
       font-weight: 600;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.04);
     }
 
     .workflow-btn {
@@ -601,6 +801,20 @@
   </style>
 </head>
 <body>
+
+<!-- Kawaii iOS-Style Pill Switch -->
+<div class="theme-switch-container">
+  <div class="theme-switch" id="theme-switch" onclick="toggleCuteTheme()" role="button" tabindex="0" aria-label="Toggle Light and Dark Mode">
+    <div class="theme-switch-thumb">
+      <span class="thumb-icon icon-sun">☀️</span>
+      <span class="thumb-icon icon-moon">🌙</span>
+    </div>
+    <div class="theme-switch-labels">
+      <span class="switch-text text-day">Day 🌈</span>
+      <span class="switch-text text-night">☁️ Night</span>
+    </div>
+  </div>
+</div>
 
 <div class="container">
   <!-- Cross-App Header Navigation -->
@@ -722,6 +936,46 @@
 </footer>
 
 <script>
+  // ==========================================
+  // KAWAII THEME SWITCHER (Browser Default & LocalStorage)
+  // ==========================================
+  function initTheme() {
+    const saved = localStorage.getItem('pdfresizer_theme');
+    const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const theme = saved ? saved : (prefersDark ? 'dark' : 'light');
+    applyTheme(theme);
+  }
+
+  function applyTheme(theme) {
+    if (theme === 'dark') {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    } else {
+      document.documentElement.removeAttribute('data-theme');
+    }
+  }
+
+  function toggleCuteTheme() {
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+    const nextTheme = isDark ? 'light' : 'dark';
+    applyTheme(nextTheme);
+    localStorage.setItem('pdfresizer_theme', nextTheme);
+  }
+
+  document.getElementById('theme-switch').addEventListener('keydown', e => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      toggleCuteTheme();
+    }
+  });
+
+  if (window.matchMedia) {
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+      if (!localStorage.getItem('pdfresizer_theme')) {
+        applyTheme(e.matches ? 'dark' : 'light');
+      }
+    });
+  }
+
   let engineReady = false;
   function verifyEngines() {
     const badge = document.getElementById('engine-badge');
@@ -743,6 +997,7 @@
   }
 
   window.addEventListener('DOMContentLoaded', () => {
+    initTheme();
     verifyEngines();
     if (window.location.pathname.includes('/PDF-Resizer')) {
       const anythingUrl = window.location.pathname.replace('/PDF-Resizer', '/anything-to-pdf');
